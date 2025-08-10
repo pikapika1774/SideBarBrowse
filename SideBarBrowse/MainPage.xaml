@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SideBarBrowse.MainPage"
+             NavigationPage.HasNavigationBar="False">
+    <Grid RowDefinitions="Auto,*" Padding="6">
+
+        <!-- ツールバー（常時表示） -->
+        <Grid x:Name="TopBar"
+              Grid.Row="0"
+              ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto"
+              ColumnSpacing="6">
+            <Button x:Name="BackButton" Text="◀" Clicked="BackButton_Clicked" />
+            <Button Grid.Column="1" x:Name="ForwardButton" Text="▶" Clicked="ForwardButton_Clicked" />
+            <Button Grid.Column="2" x:Name="RefreshButton" Text="⟳" Clicked="RefreshButton_Clicked" />
+            <Entry Grid.Column="3" x:Name="AddressEntry" Placeholder="https://..." ReturnType="Go" Completed="AddressEntry_Completed"/>
+            <Button Grid.Column="4" Text="移動" Clicked="GoButton_Clicked"/>
+
+            <!-- 後からでも左右を切替できるボタン -->
+            <Button Grid.Column="5" Text="左" Clicked="DockLeft_Clicked"/>
+            <Button Grid.Column="6" Text="右" Clicked="DockRight_Clicked"/>
+        </Grid>
+
+        <!-- コンテンツ領域：WebView と初回の左右選択オーバーレイ -->
+        <Grid Grid.Row="1">
+            <WebView x:Name="Browser" Navigated="Browser_Navigated"/>
+
+            <!-- 初回に左右を必ず選ばせるオーバーレイ -->
+            <Grid x:Name="SideChooserOverlay"
+                  BackgroundColor="#AA000000"
+                  HorizontalOptions="Fill" VerticalOptions="Fill"
+                  IsVisible="False">
+                <Frame Padding="16" CornerRadius="12" BackgroundColor="White"
+                       HorizontalOptions="Center" VerticalOptions="Center">
+                    <VerticalStackLayout Spacing="12" WidthRequest="260">
+                        <Label Text="固定する位置を選んでください" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                        <Button Text="左端に固定する" Clicked="DockLeft_Clicked"/>
+                        <Button Text="右端に固定する" Clicked="DockRight_Clicked"/>
+                        <Label Text="※ 他アプリを最大化すると、この領域を避けます" FontSize="12" TextColor="#666" HorizontalTextAlignment="Center"/>
+                    </VerticalStackLayout>
+                </Frame>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
